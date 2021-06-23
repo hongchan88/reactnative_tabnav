@@ -1,7 +1,9 @@
 import React from "react";
-import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client"
+import { ApolloClient, concat, empty, InMemoryCache, makeVar } from "@apollo/client"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
+import { offsetLimitPagination } from "@apollo/client/utilities";
+import { ImageComponent } from "react-native";
 
 
 export const isLoggedInVar = makeVar(false);
@@ -27,8 +29,34 @@ export const logUserOut = async () => {
 };
 const client = new ApolloClient({
 
-    uri: "https://instaclon-nomad-challenge.herokuapp.com/graphql",
-    cache: new InMemoryCache(),
+    uri: "http://localhost:4000/graphql",
+    cache: new InMemoryCache({
+        typePolicies: {
+            Query: {
+                fields: {
+                    seeCoffeeShops: {
+                    
+               
+                    keyArgs:false,
+                    keyFields: false,
+                    merge(existing, incoming){
+                        if (!existing) {
+                            return incoming;
+                        }
+                          console.log("existing", existing )
+                
+                
+                        return {
+                            CoffeeShop: [...existing.CoffeeShop, ...incoming.CoffeeShop]}
+                    }
+                
+   
+            
+        }
+            },
+          },
+        },
+      }),
 
 })
 
