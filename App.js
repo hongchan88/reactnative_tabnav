@@ -10,6 +10,7 @@ import { AppearanceProvider } from 'react-native-appearance';
 import client, { isLoggedInVar, tokenVar } from './apollo';
 import { useReactiveVar, ApolloProvider } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import StackNavFactory from './navigators/StackNavFactory';
 
 
 
@@ -51,6 +52,7 @@ export default function App() {
       <AppearanceProvider>
         <NavigationContainer>
           <LoggedOutNav />
+ 
 
 
         </NavigationContainer>

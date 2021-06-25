@@ -38,14 +38,14 @@ const client = new ApolloClient({
                     
                
                     keyArgs:false,
-                    keyFields: false,
+                  
                     merge(existing, incoming){
                         if (!existing) {
                             return incoming;
                         }
                           console.log("existing", existing )
                 
-                
+                        
                         return {
                             CoffeeShop: [...existing.CoffeeShop, ...incoming.CoffeeShop]}
                     }
