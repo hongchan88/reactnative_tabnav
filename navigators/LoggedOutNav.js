@@ -8,58 +8,44 @@ import { useReactiveVar } from "@apollo/client";
 import UserDetail from "../screens/UserDetail";
 import { Ionicons } from "@expo/vector-icons";
 import StackNavFactory from "./StackNavFactory";
+import { createStackNavigator } from "@react-navigation/stack";
+import TabsNav from "./TabsNav";
+import UploadNav from "./UploadNav";
 
-const Tabs = createBottomTabNavigator();
+import SelectPhoto from "../screens/SelectPhoto";
+import UploadForm from "../screens/UploadForm";
+
+const Stack = createStackNavigator();
 
 export default function LoggedOutNav() {
   const isLoggedIn = useReactiveVar(isLoggedInVar);
   return (
-    <Tabs.Navigator tabBarOptions={{ style: { backgroundColor: "white" } }}>
-      <Tabs.Screen
-        name="Home"
+    <Stack.Navigator mode="modal">
+      <Stack.Screen
+        name="Tabs"
+        options={{ headerShown: false }}
+        component={TabsNav}
+      />
+      <Stack.Screen
+        name="Upload"
+        options={{ headerShown: false }}
+        component={UploadNav}
+      />
+      <Stack.Screen
+        name="UploadForm"
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons name="home" color={color} size={22} />
+          headerBackTitleVisible: false,
+          headerBackImage: ({ tintColor }) => (
+            <Ionicons color={tintColor} name="close" size={28} />
           ),
+          title: "Upload",
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "black",
+          },
         }}
-      >
-        {() => <StackNavFactory screenName="Home" />}
-      </Tabs.Screen>
-
-      {isLoggedIn ? (
-        <Tabs.Screen
-          name="Profile"
-          options={{
-            tabBarIcon: ({ focused, color, size }) => (
-              <Ionicons name="person" color={color} size={22} />
-            ),
-          }}
-        >
-          {() => <StackNavFactory screenName="UserDetail" />}
-        </Tabs.Screen>
-      ) : (
-        <Tabs.Screen
-          name="Profile"
-          options={{
-            tabBarIcon: ({ focused, color, size }) => (
-              <Ionicons name="person" color={color} size={22} />
-            ),
-          }}
-        >
-          {() => <StackNavFactory screenName="Profile" />}
-        </Tabs.Screen>
-      )}
-
-      <Tabs.Screen
-        name="Search"
-        options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons name="search" color={color} size={22} />
-          ),
-        }}
-      >
-        {() => <StackNavFactory screenName="Search" />}
-      </Tabs.Screen>
-    </Tabs.Navigator>
+        component={UploadForm}
+      />
+    </Stack.Navigator>
   );
 }
